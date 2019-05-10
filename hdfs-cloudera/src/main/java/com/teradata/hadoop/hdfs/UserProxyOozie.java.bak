@@ -1,0 +1,138 @@
+package com.teradata.hadoop.hdfs;
+
+import java.io.IOException;
+import java.security.PrivilegedAction;
+import java.security.PrivilegedExceptionAction;
+import java.util.Properties;
+import java.util.concurrent.Callable;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.security.UserGroupInformation;
+import org.apache.oozie.client.AuthOozieClient;
+import org.apache.oozie.client.OozieClient;
+import org.apache.oozie.client.OozieClientException;
+import org.apache.oozie.client.WorkflowJob;
+import org.apache.oozie.client.XOozieClient;
+/**
+ * @Project:
+ * @Description:
+ * @Version 1.0.0
+ * @Throws SystemException:
+ * @Author: <li>2019/3/22/022 Administrator Create 1.0
+ * @Copyright ©2018-2019 al.github
+ * @Modified By:
+ */
+public class UserProxyOozie {
+
+    public static void main(String[] args) throws Exception {
+        HadoopLogin login = new HadoopLogin();
+        final Configuration conf = login.loginHdfs("ibdc","C:/Program Files (x86)/Java/newhadoop_oozieweb_conf/ibdc.keytab");
+        UserGroupInformation.getLoginUser().doAs(new PrivilegedExceptionAction<Void>(){
+
+            public Void run() throws Exception {
+                AuthOozieClient.doAs("oozieweb",new Taska());
+                return null;
+            }
+        });
+//		UserGroupInformation.getLoginUser().doAs(new PrivilegedExceptionAction<Void>(){
+//			public Void run() throws Exception {
+//				submitJob();
+//				return null;
+//			}
+//		});
+//		UserGroupInformation ugi = UserGroupInformation.createProxyUser("oozieweb", UserGroupInformation.getLoginUser());
+//		ugi.doAs(new PrivilegedExceptionAction<Void>() {
+//			public Void run() throws Exception {
+//				 //Submit a job
+////				 FileSystem fs = FileSystem.get(conf);
+////				 Path sourcePath = new Path("/user/oozieweb/anll");
+////				 fs.mkdirs(sourcePath);
+//				submitJob();
+//				return null;
+//			}
+//		});
+
+    }
+
+    private static void submitJob() throws OozieClientException, InterruptedException{
+        // get a OozieClient for local Oozie
+        XOozieClient  wc =new XOozieClient("http://hadoop7:11000/oozie/");
+//		 OozieClient wc = new OozieClient("http://hadoop7:11000/oozie/v1/job/");
+//		 AuthOozieClient wc = new AuthOozieClient("http://hadoop7:11000/oozie/", AuthOozieClient.AuthType.KERBEROS.toString());
+        // create a workflow job configuration and set the workflow application path
+        Properties conf = wc.createConfiguration();
+        conf.setProperty(OozieClient.APP_PATH, "hdfs://nameservice1/user/hue/oozie/workspaces/hue-oozie-1483602460.27/");
+
+        try {
+            System.out.println(">>>>>>>>>>"+UserGroupInformation.getCurrentUser()+">>>>>"+UserGroupInformation.getLoginUser());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        // setting workflow parameters
+        conf.setProperty("jobTracker", "hadoop7:8032");
+        conf.setProperty("nameNode", "hdfs://nameservice1");
+//		 conf.setProperty("examplesRoot", EXAMPLE_DIR);
+        conf.setProperty("queueName", "cdrapp");
+//		 conf.setProperty("outputDir", OUTPUT_DIR);
+//		 conf.setProperty("oozie.wf.rerun.failnodes", "true");
+//		 conf.setProperty("hdfs.keytab.file", "C:/Program Files (x86)/Java/newhadoop_oozieweb_conf/oozieweb.keytab");
+//		 conf.setProperty("hdfs.kerberos.principal", "oozieweb");
+//		 conf.setProperty("user.name", "oozieweb");
+//		 conf.setProperty("oozie.proxysubmission", "true");
+        conf.setProperty("mapred.mapper.new-api", "true");
+        conf.setProperty("mapred.reducer.new-api", "true");
+        conf.setProperty("oozie.use.system.libpath", "true");
+
+        // submit and start the workflow job
+        String jobId = wc.run(conf);
+        System.out.println("Workflow job submitted");
+
+        // wait until the workflow job finishes printing the status every 10 seconds
+        while (wc.getJobInfo(jobId).getStatus() == WorkflowJob.Status.RUNNING) {
+            System.out.println("Workflow job running ...");
+            Thread.sleep(10 * 1000);
+        }
+
+        // print the final status of the workflow job
+        System.out.println("Workflow job completed ...");
+        System.out.println(wc.getJobInfo(jobId));
+    }
+
+
+}
+
+class Taska implements Callable<String>{
+
+    public String call() throws Exception {
+        XOozieClient  wc =new XOozieClient("http://hadoop7:11000/oozie/");
+        Properties conf = wc.createConfiguration();
+        conf.setProperty(OozieClient.APP_PATH, "hdfs://nameservice1/user/oozieweb/oozie-app/hadoop/workflow/antest4/");
+
+        try {
+            System.out.println(">>>>>>>>>>"+UserGroupInformation.getCurrentUser()+">>>>>"+UserGroupInformation.getLoginUser());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        conf.setProperty("jobTracker", "hadoop7:8032");
+        conf.setProperty("nameNode", "hdfs://nameservice1");
+        conf.setProperty("queueName", "cdrapp");
+        conf.setProperty("mapred.mapper.new-api", "true");
+        conf.setProperty("mapred.reducer.new-api", "true");
+        conf.setProperty("oozie.use.system.libpath", "true");
+
+        String jobId = wc.run(conf);
+        System.out.println("Workflow job submitted");
+
+        while (wc.getJobInfo(jobId).getStatus() == WorkflowJob.Status.RUNNING) {
+            System.out.println("Workflow job running ...");
+            Thread.sleep(10 * 1000);
+        }
+
+        System.out.println("Workflow job completed ...");
+        System.out.println(wc.getJobInfo(jobId));
+        return null;
+    }
+}

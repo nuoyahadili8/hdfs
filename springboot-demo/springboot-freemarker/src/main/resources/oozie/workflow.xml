@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow-app name="${jobName}" xmlns="uri:oozie:workflow:0.5">
+  <credentials>
+    <credential name="hive_balancing.sxmcc" type="hive2">
+      <property>
+        <name>hive2.jdbc.url</name>
+        <value>jdbc:hive2://10.210.116.253:12002/default</value>
+      </property>
+      <property>
+        <name>hive2.server.principal</name>
+        <value>hive/hive_balancing.sxmcc@SXMCC.COM</value>
+      </property>
+    </credential>
+  </credentials>
+  <start to="hive21"/>
+  <action name="hive21" cred="hive_balancing.sxmcc" retry-max="1" retry-interval="10">
+    <hive2 xmlns="uri:oozie:hive2-action:0.1">
+      <job-tracker>${jobTracker}</job-tracker>
+      <name-node>${nameNode}</name-node>
+      <job-xml>${nameNode}/user/oozieweb/conf/hive-site.xml</job-xml>
+      <configuration>
+        <property>
+          <name>mapred.job.queue.name</name>
+          <value>${queueName}</value>
+        </property>
+        <property>
+          <name>mapreduce.job.queuename</name>
+          <value>${queueName}</value>
+        </property>
+      </configuration>
+      <jdbc-url>jdbc:hive2://10.210.116.253:12002/default</jdbc-url>
+      <password>Stq123!!</password>
+      <script>${nameNode}/user/oozieweb/hive2sql/oozieweb/BCC/TB_BCC_05007_DAY/TB_BCC_05007_DAY_3.sql</script>
+      <param>TX_DATE=${TX_DATE}</param>
+      <param>TX_MONTH=${TX_MONTH}</param>
+    </hive2>
+    <ok to="end"/>
+    <error to="fail"/>
+  </action>
+  <kill name="fail">
+    <message>Workflow failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+  </kill>
+  <end name="end"/>
+</workflow-app>

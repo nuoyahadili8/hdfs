@@ -1,0 +1,6 @@
+spring:
+  data:
+    elasticsearch:
+      cluster-nodes: 106.12.203.3:9200
+server:
+  port: 8080

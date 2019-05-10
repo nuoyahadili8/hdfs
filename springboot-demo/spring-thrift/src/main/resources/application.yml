@@ -1,0 +1,5 @@
+thrift:
+  port: 8888
+  host: localhost
+  minWorkerThreads: 10
+  maxWorkerThreads: 100

@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow-app name="antest002" xmlns="uri:oozie:workflow:0.5">
+  <start to="ssh1"/>
+    <action name="ssh1">
+    <ssh xmlns="uri:oozie:ssh-action:0.2">
+      <host>billftp@10.210.119.196</host>
+      <command>ksh</command>
+      <args>aa.sh</args>
+    </ssh>
+    <ok to="end"/>
+    <error to="fail"/>
+  </action>
+  <kill name="fail">
+    <message>Workflow failed, error message[wf:errorMessage(wf:lastErrorNode())]</message>
+  </kill>
+  <end name="end"/>
+</workflow-app>

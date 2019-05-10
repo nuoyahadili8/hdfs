@@ -1,0 +1,8 @@
+spring:
+  rabbitmq:
+    addresses: 106.12.203.43
+    port: 5672
+    username: root
+    password: 123qwe!!
+  application:
+    name: spirng-boot-rabbitmq-sender

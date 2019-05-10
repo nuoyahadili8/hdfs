@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.teradata.hadoop</groupId>
+    <artifactId>hdfs</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+    <modules>
+        <module>hdfs-cloudera</module>
+        <module>intenet-develop</module>
+        <module>springboot-demo</module>
+        <module>flink-develop</module>
+        <module>spring-hadoop</module>
+        <module>spark2x-develop</module>
+        <module>springboot-program</module>
+        <module>mapreduce-develop</module>
+        <module>avro-develop</module>
+        <module>yarn-app</module>
+    </modules>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.3.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <repositories>
+        <repository>
+            <id>alimaven</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+        <!--<repository>-->
+            <!--<id>cloudera</id>-->
+            <!--<url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>-->
+        <!--</repository>-->
+        <!--<repository>-->
+            <!--<id>thrift</id>-->
+            <!--<url>https://repository.cloudera.com/content/repositories/releases/</url>-->
+        <!--</repository>-->
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
