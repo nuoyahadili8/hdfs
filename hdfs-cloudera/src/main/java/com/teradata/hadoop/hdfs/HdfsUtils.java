@@ -376,6 +376,7 @@ public class HdfsUtils {
 			UserGroupInformation ugi = UserGroupInformation.createProxyUser(oozieUser, UserGroupInformation.getLoginUser());
 			try {
 				ugi.doAs(new PrivilegedExceptionAction<Void>() {
+					@Override
 					public Void run() {
 						try {
 							createEmptyFile(dir, filename);
