@@ -12,12 +12,7 @@ import com.github.al.dubbo.api.SayHelloService;
  * @Copyright ©2018-2019 al.github
  * @Modified By:
  */
-@Service(
-        version = "${demo.service.version}",
-        application = "${dubbo.application.id}",
-        protocol = "${dubbo.protocol.id}",
-        registry = "${dubbo.registry.id}"
-)
+@Service(version = "1.0.0")
 public class SayHelloServiceImpl implements SayHelloService {
     @Override
     public String sayHello(String name) {

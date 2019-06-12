@@ -13,10 +13,7 @@ import com.github.al.dubbo.api.FindWordService;
  * @Modified By:
  */
 @Service(
-        version = "${demo.service.version}",
-        application = "${dubbo.application.id}",
-        protocol = "${dubbo.protocol.id}",
-        registry = "${dubbo.registry.id}",
+        version = "1.0.0",
         timeout = 5000
 )
 public class FindWordServiceImpl implements FindWordService {

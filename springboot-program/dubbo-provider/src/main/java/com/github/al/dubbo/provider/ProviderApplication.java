@@ -1,8 +1,8 @@
 package com.github.al.dubbo.provider;
 
-import com.alibaba.dubbo.config.spring.context.annotation.EnableDubboConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @Project:
@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Modified By:
  */
 @SpringBootApplication
-@EnableDubboConfig
+@ComponentScan("com.github.al.dubbo")
 public class ProviderApplication {
 
     public static void main(String[] args) {

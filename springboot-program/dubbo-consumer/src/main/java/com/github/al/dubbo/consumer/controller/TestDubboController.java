@@ -19,21 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/dubbo")
 public class TestDubboController {
 
-    @Reference(version = "1.0.0",
-            application = "${dubbo.application.id}",
-//            url = "dubbo://localhost:12345",
+    @Reference(version = "1.0.0", check = true,
             loadbalance = "roundrobin", //负载均衡
             retries = 2, //失败重试次数
-            mock = "true"    //服务降级
+            mock = "true" //服务降级
     )
     private SayHelloService sayHelloService;
 
     @Reference(version = "1.0.0",
-            application = "${dubbo.application.id}",
-//            url = "dubbo://localhost:12345",
+            check = true,
             loadbalance = "roundrobin", //负载均衡
-            retries = 2 //失败重试次数
-    )
+            retries = 2, //失败重试次数
+            mock = "true"    //服务降级
+            )
     private FindWordService findWordService;
 
     @RequestMapping("say")
