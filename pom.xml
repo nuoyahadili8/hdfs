@@ -19,6 +19,8 @@
         <module>mapreduce-develop</module>
         <module>avro-develop</module>
         <module>yarn-app</module>
+        <module>springboot-dubbo</module>
+        <module>flume-interceptor</module>
     </modules>
 
     <parent>

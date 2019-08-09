@@ -1,6 +1,7 @@
 package com.github.al.dubbo.consumer.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.github.al.dubbo.api.DemoService;
 import com.github.al.dubbo.api.FindWordService;
 import com.github.al.dubbo.api.SayHelloService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,14 @@ public class TestDubboController {
             )
     private FindWordService findWordService;
 
+    @Reference(version = "1.0.0",
+            check = true,
+            loadbalance = "roundrobin", //负载均衡
+            retries = 2, //失败重试次数
+            mock = "true"    //服务降级
+    )
+    private DemoService demoService;
+
     @RequestMapping("say")
     public String hello(String name){
         String s = sayHelloService.sayHello(name);
@@ -44,6 +53,12 @@ public class TestDubboController {
     @RequestMapping("find")
     public String find(String str){
         String string = findWordService.findString(str);
+        return string;
+    }
+
+    @RequestMapping("get")
+    public String getStr(){
+        String string = demoService.getString();
         return string;
     }
 }

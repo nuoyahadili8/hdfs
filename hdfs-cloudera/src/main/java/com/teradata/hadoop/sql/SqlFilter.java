@@ -95,7 +95,7 @@ public class SqlFilter {
     }
 
     public static void main(String[] args) throws IOException {
-        List<String> old_sql = IOUtils.readLines(new FileInputStream("F:\\Domcument\\win7_180227\\data\\CDH迁移Gbase平台\\脚本\\TB_RPT_HIGH_DOU_WLAN_MON.SQL"),"gbk");
+        List<String> old_sql = IOUtils.readLines(new FileInputStream("F:\\Domcument\\win7_180227\\data\\CDH迁移Gbase平台\\脚本\\TB_RPT_HIGH_DOU_WLAN_MON.SQL"),"utf-8");
         List<String> sqls = dealSqlList(old_sql);
         for (String sql:sqls){
             System.out.println("================");

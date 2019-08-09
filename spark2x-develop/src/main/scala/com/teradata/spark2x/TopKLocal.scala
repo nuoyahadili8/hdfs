@@ -26,7 +26,7 @@ object TopKLocal {
       .appName("example")
       .getOrCreate()
     val sc=sparkSession.sparkContext
-    sc.makeRDD(1 to 10).collect().count()
+    sc.makeRDD(1 to 10).collect()
     val lines = sc.textFile("D://flinkx_hdfs.json", 1)
     val result = lines.flatMap(_.split("\\s+")).map((_, 1)).reduceByKey(_ + _)
     val sorted = result.map { case (key, value) => (value, key) }.sortByKey(true, 1)

@@ -16,14 +16,14 @@
             <id>alimaven</id>
             <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>cloudera</id>
-            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
-        </repository>
-        <repository>
-            <id>thrift</id>
-            <url>https://repository.cloudera.com/content/repositories/releases/</url>
-        </repository>
+        <!--<repository>-->
+            <!--<id>cloudera</id>-->
+            <!--<url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>-->
+        <!--</repository>-->
+        <!--<repository>-->
+            <!--<id>thrift</id>-->
+            <!--<url>https://repository.cloudera.com/content/repositories/releases/</url>-->
+        <!--</repository>-->
     </repositories>
 
     <dependencies>
@@ -285,6 +285,12 @@
             <artifactId>hadoop-auth</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jline</groupId>
+            <artifactId>jline</artifactId>
+            <version>2.14.2</version>
         </dependency>
     </dependencies>
 
